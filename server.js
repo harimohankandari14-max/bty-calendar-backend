@@ -7,7 +7,7 @@ import { google } from 'googleapis';
 import { v4 as uuidv4 } from 'uuid';
 import fetch from 'node-fetch';
 import YAML from 'yaml';
-
+let GLOBAL_TOKENS = null; // <-- holds Google tokens for server-to-server calls
 const {
   PORT = 3000,
   BASE_URL, // e.g. https://bty-cal.onrender.com (NO trailing slash)
