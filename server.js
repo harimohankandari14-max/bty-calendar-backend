@@ -292,6 +292,27 @@ app.post('/routines/run', requireApiKey, requireAuth, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+app.post('/tool/list_events', requireApiKey, requireAuth, async (req, res) => {
+  try {
+    const { timeMinISO, timeMaxISO, maxResults = 10 } = req.body;
+    const tokens = getTokens(req);
+    const cal = calendarClient(tokens);
 
+    const { data } = await cal.events.list({
+      calendarId: 'primary',
+      timeMin: timeMinISO || new Date().toISOString(),
+      timeMax: timeMaxISO,
+      maxResults,
+      singleEvents: true,
+      orderBy: 'startTime'
+    });
+
+    console.log('📅 list_events returned', data.items?.length || 0, 'events');
+    res.json({ items: data.items || [] });
+  } catch (e) {
+    console.error('💥 list_events failed', e?.response?.data || e.message || e);
+    res.status(500).json({ error: e?.response?.data || e.message || 'Unknown error' });
+  }
+});
 // ---------- START ----------
 app.listen(PORT, () => console.log(`✅ BTY calendar backend running on ${PORT}`));
