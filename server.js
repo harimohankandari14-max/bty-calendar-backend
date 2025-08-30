@@ -316,3 +316,7 @@ app.post('/tool/list_events', requireApiKey, requireAuth, async (req, res) => {
 });
 // ---------- START ----------
 app.listen(PORT, () => console.log(`✅ BTY calendar backend running on ${PORT}`));
+const PORT = process.env.PORT || 10000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
